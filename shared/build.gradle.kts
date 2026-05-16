@@ -80,6 +80,12 @@ kotlin {
         }
         jsMain.dependencies {
             implementation(libs.wrappers.browser)
+            implementation(libs.ktor.client.js)
+        }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
         }
     }
 }
