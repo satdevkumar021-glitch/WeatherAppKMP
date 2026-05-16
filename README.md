@@ -1,46 +1,56 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+# Weather App - Kotlin Multiplatform
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A cross-platform weather application built with **Kotlin Multiplatform** and **Compose Multiplatform**. This project targets Android, iOS, Web (Wasm & JS), and Desktop (JVM).
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## 🚀 Features (Planned)
+- **Real-time Weather:** Get current weather conditions based on your location.
+- **Detailed Forecasts:** View hourly and daily forecasts.
+- **Location Search:** Search for weather in cities around the world.
+- **Multi-platform UI:** A consistent and beautiful UI across all platforms using Compose Multiplatform.
+- **Dark Mode Support:** Automatic switching based on system settings.
+
+## 🛠️ Tech Stack
+- **UI:** [Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/)
+- **Shared Logic:** Kotlin Multiplatform (KMP)
+- **Dependency Injection:** (Planned: Koin)
+- **Networking:** (Planned: Ktor)
+- **Serialization:** (Planned: Kotlinx Serialization)
+- **Local Database:** (Planned: SQLDelight or Room)
+- **Images:** (Planned: Coil3)
+
+## 📂 Project Structure
+* [/androidApp](./androidApp) - Android specific application code.
+* [/iosApp](./iosApp) - iOS specific application code (SwiftUI entry point).
+* [/desktopApp](./desktopApp) - Desktop (JVM) specific application code.
+* [/webApp](./webApp) - Web (Wasm/JS) specific application code.
+* [/shared](./shared) - Shared Kotlin code (UI & Logic) used across all platforms.
+  - `commonMain`: Shared UI and business logic.
+  - `androidMain`, `iosMain`, `jvmMain`, `jsMain`, `wasmJsMain`: Platform-specific implementations.
+
+## 💻 Getting Started
+
+### Prerequisites
+- Android Studio (latest stable version)
+- Xcode (for iOS development)
+- JDK 17 or higher
 
 ### Running the apps
+Use the run configurations in your IDE or the following Gradle tasks:
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+- **Android:** `./gradlew :androidApp:assembleDebug`
+- **Desktop:**
+  - Standard: `./gradlew :desktopApp:run`
+  - Hot Reload: `./gradlew :desktopApp:hotRun --auto`
+- **Web:**
+  - Wasm: `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
+  - JS: `./gradlew :webApp:jsBrowserDevelopmentRun`
+- **iOS:** Open `/iosApp` in Xcode and run.
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- Desktop app:
-  - Hot reload: `./gradlew :desktopApp:hotRun --auto`
-  - Standard run: `./gradlew :desktopApp:run`
-- Web app:
-  - Wasm target (faster, modern browsers): `./gradlew :webApp:wasmJsBrowserDevelopmentRun`
-  - JS target (slower, supports older browsers): `./gradlew :webApp:jsBrowserDevelopmentRun`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
-
-### Running tests
-
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
-
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- Desktop tests: `./gradlew :shared:jvmTest`
-- Web tests:
-  - Wasm target: `./gradlew :shared:wasmJsTest`
-  - JS target: `./gradlew :shared:jsTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+### Running Tests
+- **Android:** `./gradlew :shared:testAndroidHostTest`
+- **Desktop:** `./gradlew :shared:jvmTest`
+- **Web:** `./gradlew :shared:wasmJsTest` / `./gradlew :shared:jsTest`
+- **iOS:** `./gradlew :shared:iosSimulatorArm64Test`
 
 ---
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
-
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+Feedback and contributions are welcome!
