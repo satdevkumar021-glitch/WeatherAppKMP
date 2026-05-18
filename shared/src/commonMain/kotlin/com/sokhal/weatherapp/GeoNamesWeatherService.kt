@@ -12,16 +12,21 @@ class GeoNamesWeatherService (
     suspend fun getNearWeather(
         latitude: Double,
         longitude: Double,
-        username: String="sekaronline4u"
-    ): WeatherObservation{
-        val response: WeatherApiResponse=client.get("http://api.geonames.org/findNearByWeatherJSON"){
-            parameter("formatted","true")
-            parameter("lat",latitude)
-            parameter("lng",longitude)
-            parameter("username",username)
-            parameter("style","full")
+        username: String = "sekharonline4u"
+    ): WeatherObservation {
+        println("Lat: $latitude")
+        println("Lon: $longitude")
+        println("user: $username")
+        val response:  WeatherApiResponse=client.get("http://api.geonames.org/findNearByWeatherJSON"){
+            parameter("formatted", "true")
+            parameter("lat", latitude)
+            parameter("lng", longitude)
+            parameter("username", username)
+            parameter("style", "full")
         }.body()
-        print(response.weatherObservation)
-        return response.weatherObservation ?:throw IllegalStateException("No Weather Observation Found in API Response")
+
+        println("API Response: ${response.weatherObservation}")
+        println("API Response Status :: ${response.status}")
+        return response.weatherObservation ?: throw IllegalStateException("No Weather Observation Found in API Response")
     }
 }

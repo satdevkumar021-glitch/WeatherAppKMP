@@ -3,7 +3,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 @Serializable
 data class WeatherApiResponse(
-    val weatherObservation : WeatherObservation? = null
+    val weatherObservation : WeatherObservation? = null,
+    val status:GeoNamesStatus? = null
+)
+@Serializable
+data class GeoNamesStatus(
+    val message: String,
+    val value: Int
 )
 @Serializable
 data class WeatherObservation(

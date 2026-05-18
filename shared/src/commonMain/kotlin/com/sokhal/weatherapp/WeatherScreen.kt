@@ -17,107 +17,100 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.unit.dp
-import androidx.graphics.shapes.Feature
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 @Composable
 fun AndroidWeatherScreen(){
-    val controller= remember { WeatherController() }
+    val controller = remember { WeatherController() }
     val state by controller.state.collectAsState()
+    val scope = rememberCoroutineScope()
 
     var latitudeText by remember { mutableStateOf("42.0") }
     var longitudeText by remember { mutableStateOf("-2.0")}
 
     WeatherContent(
-        title = "GeoName Weather - Android ",
+        title = "GeoName Weather - Multiplatform",
         latitudeText = latitudeText,
         longitudeText = longitudeText,
-        onLatitudeChange = {latitudeText=it},
-        onLongitudeText = {longitudeText=it},
-        state=state,
+        onLatitudeChange = { latitudeText = it },
+        onLongitudeText = { longitudeText = it },
+        state = state,
         onFetchClick = {
             val latitude = latitudeText.toDoubleOrNull()
             val longitude = longitudeText.toDoubleOrNull()
-            if(latitude == null || longitude == null ){
-                return@WeatherContent
-            }
-            MainScope().launch {
-                controller.loadWeather(latitude,longitude)
+            if (latitude != null && longitude != null) {
+                scope.launch {
+                    controller.loadWeather(latitude, longitude)
+                }
             }
         }
     )
 }
 
 @Composable
-private fun  WeatherContent(
-    title:String,
-    latitudeText:String,
-    longitudeText:String,
-    onLatitudeChange: (String)-> Unit,
-    onLongitudeText:(String)-> Unit,
+private fun WeatherContent(
+    title: String,
+    latitudeText: String,
+    longitudeText: String,
+    onLatitudeChange: (String) -> Unit,
+    onLongitudeText: (String) -> Unit,
     state: WeatherUiState,
-    onFetchClick:()-> Unit
-){
+    onFetchClick: () -> Unit
+) {
     Column(
-        modifier = Modifier.fillMaxSize()
-            .padding(24.dp),
-        Arrangement.Center,
-        Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize().padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(title)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = latitudeText,
             onValueChange = onLatitudeChange,
-            label = { Text("Latitude")},
+            label = { Text("Latitude") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = longitudeText,
             onValueChange = onLongitudeText,
-            label = { Text("Longitude")},
+            label = { Text("Longitude") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onFetchClick){
+        Button(onFetchClick) {
             Text("Get Weather")
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        when(state){
+        when (state) {
             is WeatherUiState.Error -> Text("Error: ${state.message}")
             WeatherUiState.Idle -> Text("Enter Latitude and Longitude, then tap Get Weather")
             WeatherUiState.Loading -> CircularProgressIndicator()
-            is WeatherUiState.Success -> {WeatherCard(state.weather)}
+            is WeatherUiState.Success -> WeatherCard(state.weather)
         }
-
     }
-
 }
 
 @Composable
-private fun WeatherCard(weather: WeatherObservation){
-    Card (){
-        Column (
+private fun WeatherCard(weather: WeatherObservation) {
+    Card {
+        Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
-        ){
+        ) {
             Text("Station : ${weather.stationName ?: "-"}")
             Text("Country : ${weather.countryCode ?: "-"}")
-            Text("Temperature : ${weather.temperature ?: "-"}" )
+            Text("Temperature : ${weather.temperature ?: "-"}")
             Text("Humidity : ${weather.humidity ?: "-"}%")
-            Text("Wind Direction : ${weather.windDirection ?:
-            "-"}")
+            Text("Wind Direction : ${weather.windDirection ?: "-"}")
             Text("Date Time : ${weather.datetime ?: "-"}")
             Text("Observation : ${weather.observation ?: "-"}")
-
         }
     }
 }
