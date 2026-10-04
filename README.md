@@ -54,3 +54,12 @@ Use the run configurations in your IDE or the following Gradle tasks:
 
 ---
 Feedback and contributions are welcome!
+
+
+## License, contributions and security
+
+Original material is available under the [MIT License](LICENSE). Preserve the copyright and license notice when reusing it. Third-party material retains its own terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
+
+### Current platform status
+
+Android, desktop and web entry points use the weather screen. The iOS entry point currently uses the template greeting UI; weather integration there remains unfinished.
